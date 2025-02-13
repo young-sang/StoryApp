@@ -1,12 +1,17 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
+const db = require("./db");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/", (req, res) => {
+    res.send("Hello, Express with Mysql");
+});
 
 // api 엔드포인트
 app.get("data/:mode", (req, res) => {
