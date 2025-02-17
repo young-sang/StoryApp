@@ -4,7 +4,7 @@ const ItemList = (props) => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:5000/data/aniitems")
+        fetch(`http://localhost:5000/data/${props.db}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);

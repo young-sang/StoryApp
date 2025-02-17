@@ -20,9 +20,9 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/ani" element={<ItemList title={"ani"} />} />
-        <Route path="/manga" element={<ItemList title={"manga"} />} />
-        <Route path="/novel" element={<ItemList title={"Novel"} />} />
+        <Route path="/ani" element={<ItemList title={"ani"} db={"aniitems"} />} />
+        <Route path="/manga" element={<ItemList title={"manga"} db={"mangaitems"} />} />
+        <Route path="/novel" element={<ItemList title={"Novel"} db={"novelitems"} />} />
       </Routes>
     </Router>
   );
