@@ -7,6 +7,19 @@ function Home() {
   return <h1>홈 페이지</h1>
 }
 
+function ItemControl() {
+
+  return (
+    <form>
+      <input></input>
+      <input></input>
+      <input></input>
+      <input></input>
+      <input></input>
+    </form>
+  )
+}
+
 function App() {
   return (
     <Router>
