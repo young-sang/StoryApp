@@ -11,11 +11,14 @@ function ItemControl() {
 
   return (
     <form>
-      <input></input>
-      <input></input>
-      <input></input>
-      <input></input>
-      <input></input>
+      <input>제목</input>
+      <input>story</input>
+      <input>worldview</input>
+      <input>characters</input>
+      <input>drawing</input>
+      <input>ost</input>
+      <input>production</input>
+      <textarea></textarea>
     </form>
   )
 }
