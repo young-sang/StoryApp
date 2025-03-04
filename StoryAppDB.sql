@@ -52,3 +52,12 @@ INSERT INTO images (name, file_path)
 VALUES ('example.png', '/var/www/images/example.png');
 
 SELECT file_path FROM images WHERE id = 1;
+
+
+-- 이미지 경로 컬럼 추가
+
+ALTER TABLE novelitems ADD COLUMN image_path VARCHAR(255);
+
+ALTER TABLE mangaitems ADD COLUMN image_path VARCHAR(255);
+
+ALTER TABLE aniitems ADD COLUMN image_path VARCHAR(255);
