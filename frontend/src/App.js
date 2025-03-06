@@ -2,110 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import ItemList from "./ItemList.js";
+import ItemControl from "./Form.js";
 
 function Home() {
   return <h1>홈 페이지</h1>
 }
 
-function ItemControl(props) {
-
-  return (
-    <form>
-      
-      <label htmlFor="title">제목</label>
-      <input type="text" name="title" />
-      {/* 스토리 별점 */}
-      <label htmlFor="story">story</label>
-      <select id="story" name="story">
-        <option value={0}>0</option>
-        <option value={1}>1</option>
-        <option value={1.5}>1.5</option>
-        <option value={2}>2</option>
-        <option value={2.5}>2.5</option>
-        <option value={3}>3</option>
-        <option value={3.5}>3.5</option>
-        <option value={4}>4</option>
-        <option value={4.5}>4.5</option>
-        <option value={5}>5</option>
-      </select>
-      {/* 세계관 별점 */}
-      <label htmlFor="worldview">worldview</label>
-      <select id="worldview" name="worldview">
-        <option value={0}>0</option>
-        <option value={1}>1</option>
-        <option value={1.5}>1.5</option>
-        <option value={2}>2</option>
-        <option value={2.5}>2.5</option>
-        <option value={3}>3</option>
-        <option value={3.5}>3.5</option>
-        <option value={4}>4</option>
-        <option value={4.5}>4.5</option>
-        <option value={5}>5</option>
-      </select>
-      {/* 캐릭터 별점 */}
-      <label htmlFor="characters">characters</label>
-      <select id="characters" name="characters">
-        <option value={0}>0</option>
-        <option value={1}>1</option>
-        <option value={1.5}>1.5</option>
-        <option value={2}>2</option>
-        <option value={2.5}>2.5</option>
-        <option value={3}>3</option>
-        <option value={3.5}>3.5</option>
-        <option value={4}>4</option>
-        <option value={4.5}>4.5</option>
-        <option value={5}>5</option>
-      </select>
-      {/* 작화 별점 */}
-      <label htmlFor="drawing">drawing</label>
-      <select id="drawing" name="drawing">
-        <option value={0}>0</option>
-        <option value={1}>1</option>
-        <option value={1.5}>1.5</option>
-        <option value={2}>2</option>
-        <option value={2.5}>2.5</option>
-        <option value={3}>3</option>
-        <option value={3.5}>3.5</option>
-        <option value={4}>4</option>
-        <option value={4.5}>4.5</option>
-        <option value={5}>5</option>
-      </select>
-      {/* ost 별점 */}
-      <label htmlFor="ost">ost</label>
-      <select id="ost" name="ost">
-        <option value={0}>0</option>
-        <option value={1}>1</option>
-        <option value={1.5}>1.5</option>
-        <option value={2}>2</option>
-        <option value={2.5}>2.5</option>
-        <option value={3}>3</option>
-        <option value={3.5}>3.5</option>
-        <option value={4}>4</option>
-        <option value={4.5}>4.5</option>
-        <option value={5}>5</option>
-      </select>
-      {/* 연출 별점 */}
-      <label htmlFor="production">production</label>
-      <select id="production" name="production">
-        <option value={0}>0</option>
-        <option value={1}>1</option>
-        <option value={1.5}>1.5</option>
-        <option value={2}>2</option>
-        <option value={2.5}>2.5</option>
-        <option value={3}>3</option>
-        <option value={3.5}>3.5</option>
-        <option value={4}>4</option>
-        <option value={4.5}>4.5</option>
-        <option value={5}>5</option>
-      </select>
-      {/* 설명 */}
-      <label htmlFor="desc">설명</label>
-      <textarea id="desc"></textarea>
-
-      <input type="submit" value="추가" />
-    </form>
-  )
-}
 
 function App() {
   return (

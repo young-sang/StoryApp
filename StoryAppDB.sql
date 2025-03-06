@@ -2,6 +2,42 @@ create database storyappdb;
 
 use storyappdb;
 
+-- 현재 테이블 구조
+-- create table aniitems (
+--     id int auto_increment primary key,
+--     name varchar(50) not null,
+--     story int,
+--     worldview int,
+--     characters int,
+--     drawing int,
+--     ost int,
+--     production int,
+--     comment varchar(100)
+--     image_path VARCHAR(255)
+-- )
+
+-- create table mangaitems (
+--     id int auto_increment primary key,
+--     name varchar(50) not null,
+--     story int,
+--     worldview int,
+--     characters int,
+--     drawing int,
+--     production int,
+--     comment varchar(100)
+--     image_path VARCHAR(255)
+-- )
+
+-- create table novelitems (
+--     id int auto_increment primary key,
+--     name varchar(50) not null,
+--     story int,
+--     worldview int,
+--     characters int,
+--     comment varchar(100)
+    -- image_path VARCHAR(255)
+-- )
+
 create table aniitems (
     id int auto_increment primary key,
     name varchar(50) not null,

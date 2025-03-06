@@ -9,11 +9,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// app.get("/", (req, res) => {
-//     res.send("Hello, Express with Mysql");
-// });
+// React 정적 파일 제공
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// api 엔드포인트
+// 리스트 생성
 app.get("/data/:mode", async (req, res) => {
     try{
         const mode = req.params.mode;
@@ -33,12 +32,7 @@ app.get("/data/:mode", async (req, res) => {
     }
 });
 
-// React 정적 파일 제공
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-});
+app.post("/")
 
 // 서버 실행
 app.listen(PORT, () => {
