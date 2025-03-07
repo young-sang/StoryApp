@@ -22,9 +22,10 @@ const FormRating = ({mode, formData, handleOnChange}) => {
 
 function ItemControl(props) {
     const [previewSrc, setPreveiwSrc] = useState("");
-    const [uploadFile, setUploadFile] = useState([]);
+    const [uploadFile, setUploadFile] = useState();
     const [formData, setFormData] = useState({
         title: '',
+        category: '',
         imagePath: '',
         story: 0,
         worldview: 0,
@@ -38,8 +39,25 @@ function ItemControl(props) {
     const modes = ["story", "worldview", "characters", "drawing", "ost", "production"]; // 별점 모드 저장
 
     useEffect(() => {
+        // console.log(formData.imagePath);
+    },[formData, uploadFile]);
 
-    },[formData]);
+    // handleSubmit에서 처리 불가
+    useEffect(() => {        
+        fetch('http://localhost:5000/data/dbUpload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('데이터 저장 성공');
+        })
+        .catch(error => {
+            alert('데이터 저장 실패');
+        });
+    }, [formData.imagePath])
+
 
     // 드래그 이벤트
     const handleOnDragOver = (e) => e.preventDefault();
@@ -53,7 +71,7 @@ function ItemControl(props) {
 
             // 이미지 파일 확인
             if(file.type.startsWith('image/')){
-                setUploadFile(files);
+                setUploadFile(file);
                 const reader = new FileReader();
 
                 // 파일이 로드되면 실행
@@ -74,30 +92,25 @@ function ItemControl(props) {
         setFormData((prevData) => ({...prevData, [name]: value}));
     }
 
+    // Form 제출
     const handleOnSubmit = async (e) => {
         e.preventDefault();
         
-        const formData = new FormData();
-        formData.append('image', uploadFile);
+        const imgData = new FormData();
+        imgData.append('image', uploadFile);
 
-        fetch('http://localhost:3000/imageUpload',{
+        fetch('http://localhost:5000/upload/imageUpload',{
             method: 'POST',
-            body: formData
+            body: imgData
         })
         .then(res => res.json())
-        .then(data => {
-            setFormData((prevData) => ({
-                ...prevData, imagePath: data
-            }));
-            return fetch('http://localhost:3000/dbUpload');
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log('데이터 저장 성공');
-        })
-        .catch(error => {
-            alert('데이터 저장 실패');
-        });
+        .then(data => setFormData((prevData) => ({
+            ...prevData, 
+            imagePath: data.filePath
+        })))
+        .catch(error => console.error(error)); 
+
+        // Form 제출 => useEffect([formData.imagePath])
     }
 
 
@@ -106,6 +119,15 @@ function ItemControl(props) {
         {/* 제목 */}
         <label htmlFor="title">제목</label>
         <input type="text" name="title" value={formData.title} onChange={handleOnChange}/>
+
+        {/* 카테고리 */}
+        <label htmlFor="category">카테고리</label>
+        <select id="category" name="category" value={formData.category} onChange={handleOnChange}>
+            <option value="ani">애니</option>
+            <option value="manga">만화</option>
+            <option value="novel">소설</option>
+        </select>
+
 
         {/* 이미지 */}
         <label htmlFor="image">이미지</label>
