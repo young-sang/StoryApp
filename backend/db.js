@@ -1,27 +1,27 @@
 const mysql = require("mysql2");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 
-dotenv.config();
+// dotenv.config();
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-//   port: process.env.DB_PORT,
-//   waitForConnections: true,
-//   connectionLimit: 10,
-//   queueLimit: 0,
+const connection = mysql.createConnection({
+  
 });
 
 // 연결 테스트
-pool.getConnection((err, connection) => {
-  if(err){
-    console.error("Database connection failed", err);
-  } else {
-    console.log("Connected to MySQL database");
-    connection.release(); // 연결 해제
+connection.connect((err) => {
+  if(err) {
+    console.error(err);
+    return;
   }
-})
+  console.log('데이터베이스 연설 성공');
+});
 
-module.exports = pool.promise(); // Promise 기반으로 변환
+connection.query("SELECT * FROM aniitems", (error, results, fields) => {
+    if(error) {
+        console.error(error);
+        return;
+    }
+    console.log(results);
+});
+
+module.exports = connection; // Promise 기반으로 변환
