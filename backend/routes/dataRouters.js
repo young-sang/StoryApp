@@ -23,7 +23,7 @@ router.get("/:mode", async (req, res) => {
 
 router.post('/dbUpload', (req, res) => {
     const data = req.body;
-
+    console.log(data.category);
     switch(data.category){
         case "ani":
             db.query(
@@ -38,8 +38,28 @@ router.post('/dbUpload', (req, res) => {
             });
             break;
         case "manga":
+            db.query(
+                `INSERT INTO mangaitems (name, story, worldview, characters, drawing, production, comment, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [data.title, data.story, data.worldview, data.characters, data.drawing, data.production, data.desc, data.imagePath],
+                (error, results, fields) => {
+                if(error) {
+                    console.error(error);
+                    return;
+                }
+                
+            });
             break;
         case "novel":
+            db.query(
+                `INSERT INTO novelitems (name, story, worldview, characters, comment, image_path) VALUES (?, ?, ?, ?, ?, ?)`,
+                [data.title, data.story, data.worldview, data.characters, data.desc, data.imagePath],
+                (error, results, fields) => {
+                if(error) {
+                    console.error(error);
+                    return;
+                }
+                
+            });
             break;
     }
     
