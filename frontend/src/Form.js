@@ -24,26 +24,42 @@ const FormRating = ({mode, formData, handleOnChange}) => {
 const ItemControl = (props) => {
     const [previewSrc, setPreveiwSrc] = useState("");
     const [uploadFile, setUploadFile] = useState();
+    const [category, setCategory] = useState(null);
+
+    const ratingFields = {
+        notSelected: [],
+        ani : ["story", "worldview", "characters", "drawing", "ost", "production"],
+        manga: ["story", "worldview", "characters", "drawing", "production"],
+        novel: ["story", "worldview", "characters"]
+    };
+
     const [formData, setFormData] = useState({
         title: '',
-        category: null,
-        imagePath: '', // 초기화 시 '' 입력 없을 시 Null UseEffect에 걸리지 않기 위해
-        story: 0,
-        worldview: 0,
-        characters: 0,
-        drawing: 0,
-        ost: 0,
-        production: 0,
-        desc: ''
+        category: "notSelected",
+        imagePath: '',
+        desc: '',
+        ratings: {}
     });
-
-    const modes = ["story", "worldview", "characters", "drawing", "ost", "production"]; // 별점 모드 저장
 
     const navigate = useNavigate();
 
     useEffect(() => {
         // console.log(formData.imagePath);
     },[formData, uploadFile]);
+
+    useEffect(() => {
+        if (category !== "notSelected" && ratingFields[category]) {
+            const newRatings = {};
+            ratingFields[category].forEach(field => {
+                newRatings[field] = 0; // 각 항목에 대한 초기값 설정
+            });
+            setFormData(prev => ({
+                ...prev,
+                category,
+                ratings: newRatings
+            }));
+        }
+    }, [category])
 
     // handleSubmit에서 처리 불가
     useEffect(() => {
@@ -96,7 +112,16 @@ const ItemControl = (props) => {
 
     const handleOnChange = (e) => {
         const {name, value} = e.target;
-        setFormData((prevData) => ({...prevData, [name]: value}));
+        if(name == "category"){
+            setCategory(value);
+        } else if(ratingFields[category]?.includes(name)){
+            setFormData(prev => ({
+                ...prev,
+                ratings: {...prev.ratings, [name]: value}
+            }));
+        }else{
+            setFormData((prevData) => ({...prevData, [name]: value}));
+        }
     }
 
     // Form 제출
@@ -150,8 +175,9 @@ const ItemControl = (props) => {
             
 
             {/* 별점 */}
-            {modes.map(mode => (
-                <FormRating mode={mode}formData={formData} handleOnChange={handleOnChange}/>
+            {category !== "notSelected" && ratingFields[category] &&
+             ratingFields[category].map(mode => (
+                <FormRating key={mode} mode={mode}formData={formData} handleOnChange={handleOnChange}/>
             ))}
 
             {/* 설명 */}
