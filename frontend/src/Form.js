@@ -69,11 +69,7 @@ const ItemControl = (props) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             })
-            .then(res => res.json())
-            .then(data => {
-                console.log('데이터 저장 성공');
-                navigate(`/${formData.category}`)
-            })
+            .then(navigate(`/${formData.category}`))
             .catch(error => {
                 // alert('데이터 저장 실패');
             });
