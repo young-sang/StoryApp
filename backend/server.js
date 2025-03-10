@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+
 app.use('/data', dataRouter);
 app.use('/upload', uploadRouter);
-
 
 
 // React 정적 파일 제공

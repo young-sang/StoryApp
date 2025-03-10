@@ -97,3 +97,5 @@ ALTER TABLE novelitems ADD COLUMN image_path VARCHAR(255);
 ALTER TABLE mangaitems ADD COLUMN image_path VARCHAR(255);
 
 ALTER TABLE aniitems ADD COLUMN image_path VARCHAR(255);
+
+-- 데이터 삽입문

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const FormRating = ({mode, formData, handleOnChange}) => {
     return (
@@ -20,13 +21,13 @@ const FormRating = ({mode, formData, handleOnChange}) => {
     )
 } 
 
-function ItemControl(props) {
+const ItemControl = (props) => {
     const [previewSrc, setPreveiwSrc] = useState("");
     const [uploadFile, setUploadFile] = useState();
     const [formData, setFormData] = useState({
         title: '',
-        category: '',
-        imagePath: '',
+        category: null,
+        imagePath: '', // 초기화 시 '' 입력 없을 시 Null UseEffect에 걸리지 않기 위해
         story: 0,
         worldview: 0,
         characters: 0,
@@ -38,24 +39,30 @@ function ItemControl(props) {
 
     const modes = ["story", "worldview", "characters", "drawing", "ost", "production"]; // 별점 모드 저장
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         // console.log(formData.imagePath);
     },[formData, uploadFile]);
 
     // handleSubmit에서 처리 불가
-    useEffect(() => {        
-        fetch('http://localhost:5000/data/dbUpload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log('데이터 저장 성공');
-        })
-        .catch(error => {
-            alert('데이터 저장 실패');
-        });
+    useEffect(() => {
+        if(formData.imagePath != '' && formData.category != null){
+            fetch('http://localhost:5000/data/dbUpload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('데이터 저장 성공');
+                navigate(`/${formData.category}`)
+            })
+            .catch(error => {
+                // alert('데이터 저장 실패');
+            });
+        }
+        
     }, [formData.imagePath])
 
 
@@ -82,7 +89,7 @@ function ItemControl(props) {
                 reader.readAsDataURL(file);
 
             } else{
-                alert('이미지 파일만 업로드 가능하다.');
+                // alert('이미지 파일만 업로드 가능하다.');
             }
         }
     }
@@ -95,6 +102,10 @@ function ItemControl(props) {
     // Form 제출
     const handleOnSubmit = async (e) => {
         e.preventDefault();
+
+        if(formData.category == 'notSelected' || !uploadFile){
+            return;
+        }
         
         const imgData = new FormData();
         imgData.append('image', uploadFile);
@@ -116,37 +127,38 @@ function ItemControl(props) {
 
     return (
         <form onSubmit={handleOnSubmit}>
-        {/* 제목 */}
-        <label htmlFor="title">제목</label>
-        <input type="text" name="title" value={formData.title} onChange={handleOnChange}/>
+            {/* 제목 */}
+            <label htmlFor="title">제목</label>
+            <input type="text" name="title" value={formData.title} onChange={handleOnChange} required/>
 
-        {/* 카테고리 */}
-        <label htmlFor="category">카테고리</label>
-        <select id="category" name="category" value={formData.category} onChange={handleOnChange}>
-            <option value="ani">애니</option>
-            <option value="manga">만화</option>
-            <option value="novel">소설</option>
-        </select>
+            {/* 카테고리 */}
+            <label htmlFor="category">카테고리</label>
+            <select id="category" name="category" value={formData.category} onChange={handleOnChange}>
+                <option value="notSelected">==선택==</option>
+                <option value="ani">애니</option>
+                <option value="manga">만화</option>
+                <option value="novel">소설</option>
+            </select>
 
 
-        {/* 이미지 */}
-        <label htmlFor="image">이미지</label>
-        <div id="drop-zone" style={{ width: "100px", height: "100px", border: ".5px solid #111"}} onDragOver={handleOnDragOver} onDrop={handleOnDrop}>
-            <img src={previewSrc} alt="이미지 미리보기" id="preview"></img>
-        </div>
-        <input type="hidden" name="imagePath" value={formData.imagePath} />
-        
+            {/* 이미지 */}
+            <label htmlFor="image">이미지</label>
+            <div id="drop-zone" style={{ width: "100px", height: "100px", border: ".5px solid #111"}} onDragOver={handleOnDragOver} onDrop={handleOnDrop}>
+                <img src={previewSrc} alt="이미지 미리보기" id="preview"></img>
+            </div>
+            <input type="hidden" name="imagePath" value={formData.imagePath} required/>
+            
 
-        {/* 별점 */}
-        {modes.map(mode => (
-            <FormRating mode={mode}formData={formData} handleOnChange={handleOnChange}/>
-        ))}
+            {/* 별점 */}
+            {modes.map(mode => (
+                <FormRating mode={mode}formData={formData} handleOnChange={handleOnChange}/>
+            ))}
 
-        {/* 설명 */}
-        <label htmlFor="desc">설명</label>
-        <textarea id="desc" name="desc" value={formData.desc} onChange={handleOnChange}/>
+            {/* 설명 */}
+            <label htmlFor="desc">설명</label>
+            <textarea id="desc" name="desc" value={formData.desc} onChange={handleOnChange}/>
 
-        <input type="submit" value="추가" />
+            <input type="submit" value="추가" />
         </form>
     )
 }
