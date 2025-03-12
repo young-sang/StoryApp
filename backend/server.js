@@ -19,7 +19,8 @@ app.use('/upload', uploadRouter);
 
 // React 정적 파일 제공
 app.use(express.static(path.join(__dirname, "../frontend/build")));
-
+// 이미지 파일 제공
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // 서버 실행
 app.listen(PORT, () => {

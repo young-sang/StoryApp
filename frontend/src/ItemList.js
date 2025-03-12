@@ -32,7 +32,10 @@ const ItemList = (props) => {
             
             <ul>
                 {items.map((item, index) => {
-                    return <li>{item.name}</li>
+                    return <li key={index}>
+                        <h4>{item.name}</h4>
+                        <img src={`http://localhost:5000${item.image_path}`} />
+                        </li>
                 })}
             </ul>
             
