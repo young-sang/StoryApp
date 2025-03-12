@@ -17,7 +17,7 @@ function App() {
           <li><Link to="/">홈</Link></li>
           <li><Link to="/ani">애니</Link></li>
           <li><Link to="/manga">만화</Link></li>
-          <li><Link to="/novel">라이트노벨</Link></li>
+          <li><Link to="/novel">소설</Link></li>
           <li><Link to="/addItem">추가</Link></li>
         </ul>
       </nav>
