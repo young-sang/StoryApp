@@ -17,11 +17,7 @@ const ItemList = (props) => {
             })
             .catch((err) => console.error(err));
     }, [mode]);
-
-    useEffect(() => {
-        console.log(items);
-    }, [items])
-
+    
     useEffect(() => {
 
     }, [items])
