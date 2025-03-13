@@ -23,9 +23,12 @@ const ItemDetail = () => {
         
     },[item])
 
-    return (
+    return (item &&
         <div>
-            <h1>{item && item.name}</h1>            
+            <h1>{item.name}</h1>
+            <img src={`http://localhost:5000${item.image_path}`} />
+            <p>{item.comment}</p>
+
         </div>
     )
 }
