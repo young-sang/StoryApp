@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const ItemList = (props) => {
     const [items, setItems] = useState([]);
@@ -10,7 +11,7 @@ const ItemList = (props) => {
 
     useEffect(() => {
         if(!mode) return;
-        fetch(`http://localhost:5000/data/${mode}`)
+        fetch(`http://localhost:5000/data/list/${mode}`)
             .then((response) => response.json())
             .then((data) => {
                 setItems(data);
@@ -29,9 +30,11 @@ const ItemList = (props) => {
             <ul>
                 {items.map((item, index) => {
                     return <li key={index}>
-                        <h4>{item.name}</h4>
-                        <img src={`http://localhost:5000${item.image_path}`} />
-                        </li>
+                        <Link to={`/detail/${mode}/${item.id}`}>
+                            <h4>{item.name}</h4>
+                            <img src={`http://localhost:5000${item.image_path}`} />
+                        </Link>
+                    </li>
                 })}
             </ul>
             

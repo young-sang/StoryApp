@@ -57,7 +57,7 @@ router.post('/dbUpload', (req, res) => {
 });
 
 // Read
-router.get("/:mode", async (req, res) => {
+router.get("/list/:mode", async (req, res) => {
     try{
         const mode = req.params.mode;
         
@@ -70,7 +70,7 @@ router.get("/:mode", async (req, res) => {
 
         db.query(`SELECT * FROM ${mode}`,(error, results, fields) => {
             if(error){
-                console.error(err);
+                console.error(error);
                 return;
             }
             res.json(results);
@@ -80,6 +80,33 @@ router.get("/:mode", async (req, res) => {
         res.status(500).json({error: err.message});
     }
 });
+
+
+router.get("/single/:mode/:id", async (req, res) => {
+    try{
+        const mode = req.params.mode;
+        const id = req.params.id;
+        
+        //허용된 테이블 목록
+        const allowedTables = ["aniitems", "mangaitems", "novelitems"];
+        if(!allowedTables.includes(mode)){
+            return res.status(400).json({error: "Invaild table name"});
+        }
+
+
+        db.query(`SELECT * FROM ${mode} WHERE id=?`, [id],(error, results, fields) => {
+            if(error){
+                console.error(error);
+                return;
+            }
+            res.json(results);
+        });
+        
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+});
+
 
 
 module.exports = router;

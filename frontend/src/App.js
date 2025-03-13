@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import ItemList from "./ItemList.js";
 import ItemControl from "./Form.js";
+import ItemDetail from "./ItemDetail.js";
 
 function Home() {
   return <h1>홈 페이지</h1>
@@ -28,6 +29,7 @@ function App() {
         <Route path="/novel" element={<ItemList title={"Novel"} db={"novelitems"} />} />
         <Route path="/addItem" element={<ItemControl mode={"add"} />} />
         <Route path="/updateItem" element={<ItemControl mode={"update"} />} />
+        <Route path="/detail/:mode/:id" element={<ItemDetail/>} />
       </Routes>
     </Router>
   );
