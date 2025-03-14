@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './css/Form.css';
 
 const FormRating = ({mode, formData, handleOnChange}) => {
     return (

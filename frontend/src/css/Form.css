@@ -1,0 +1,65 @@
+
+/* 폼 스타일 */
+form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #1d1c1c;
+}
+
+input, select, textarea {
+    padding: 10px;
+    border: 1px solid #b6ccd8;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* 드래그 앤 드롭 영역 */
+#drop-zone {
+    width: 100px;
+    height: 100px;
+    border: 1px dashed #00668c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#drop-zone:hover {
+    background-color: #b6ccd8;
+}
+
+#preview {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+}
+
+/* 별점 선택 스타일 */
+.ratingItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ratingItem select {
+    padding: 5px;
+    border: 1px solid #b6ccd8;
+    border-radius: 5px;
+}
