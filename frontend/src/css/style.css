@@ -1,0 +1,115 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #d4eaf7;
+    margin: 0;
+    padding: 0;
+}
+
+/* 네비게이션 바 스타일 */
+nav {
+    background-color: #00668c;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    width: 15%;
+    height: 50%;
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #1d1c1c;
+    font-weight: bold;
+    padding: 10px 15px;
+    transition: 0.3s;
+    border-radius: 5px;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #71c4ef;
+}
+
+
+/* 아이템 리스트 스타일 */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fffefb;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #1d1c1c;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+ul li {
+    background-color: #f5f4f1;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    width: calc(33.33% - 20px);
+    text-align: center;
+}
+
+ul li:hover {
+    background-color: #b6ccd8;
+}
+
+ul li a {
+    text-decoration: none;
+    color: #1d1c1c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+ul li img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+/* 버튼 스타일 */
+button {
+    background-color: #00668c;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #71c4ef;
+}

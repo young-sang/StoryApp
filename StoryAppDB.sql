@@ -100,4 +100,3 @@ ALTER TABLE aniitems ADD COLUMN image_path VARCHAR(255);
 
 -- 데이터 삽입문
 
-

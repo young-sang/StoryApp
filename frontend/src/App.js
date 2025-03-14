@@ -1,9 +1,11 @@
 import React from "react";
+import './css/style.css'
 import { useEffect, useState } from "react";
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import ItemList from "./ItemList.js";
 import ItemControl from "./Form.js";
 import ItemDetail from "./ItemDetail.js";
+
 
 function Home() {
   return <h1>홈 페이지</h1>

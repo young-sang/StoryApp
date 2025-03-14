@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import './css/Detail.css';
 
 const ItemDetail = () => {
     const { mode } = useParams();
@@ -24,7 +25,7 @@ const ItemDetail = () => {
     },[item])
 
     return (item &&
-        <div>
+        <div className="item-detail">
             <h1>{item.name}</h1>
             <img src={`http://localhost:5000${item.image_path}`} />
             <p>{item.comment}</p>

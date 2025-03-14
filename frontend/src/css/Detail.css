@@ -1,0 +1,27 @@
+/* 아이템 상세 페이지 스타일 */
+.item-detail {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.item-detail h1 {
+    color: #1d1c1c;
+}
+
+.item-detail img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.item-detail p {
+    font-size: 18px;
+    color: #313d44;
+    margin-top: 15px;
+}
