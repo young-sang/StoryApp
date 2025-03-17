@@ -23,6 +23,7 @@ router.post('/dbUpload', (req, res) => {
                 if(error){
                     console.error(error);
                 }
+                res.json(lastInsertedId);
             })
         }
     )
@@ -68,13 +69,13 @@ router.get("/single/:mode/:id", async (req, res) => {
         const id = req.params.id;
         
         //허용된 테이블 목록
-        const allowedTables = ["aniitems", "mangaitems", "novelitems"];
+        const allowedTables = ["ani", "manga", "novel"];
         if(!allowedTables.includes(mode)){
             return res.status(400).json({error: "Invaild table name"});
         }
 
 
-        db.query(`SELECT * FROM ${mode} WHERE id=?`, [id],(error, results, fields) => {
+        db.query(`SELECT * FROM items WHERE id=?`, [id],(error, results, fields) => {
             if(error){
                 console.error(error);
                 return;

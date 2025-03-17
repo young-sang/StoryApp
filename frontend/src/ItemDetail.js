@@ -12,7 +12,7 @@ const ItemDetail = () => {
         fetch(`http://localhost:5000/data/single/${mode}/${id}`)
         .then(res => res.json())
         .then(data => {
-            
+            console.log(data);
             setItem(data[0]);
         })
         .catch(err => {
