@@ -20,6 +20,6 @@ CREATE TABLE ratings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT,
     rating_item ENUM('story', 'worldview', 'characters', 'drawing', 'ost', 'production') NOT NULL,
-    rating_value INT CHECK (rating_value BETWEEN 1 AND 10),
+    rating_value INT CHECK (rating_value BETWEEN 0 AND 10),
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );

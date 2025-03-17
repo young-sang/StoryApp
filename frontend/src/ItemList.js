@@ -1,14 +1,27 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import './css/List.css';
 
-const ItemList = (props) => {
+const ItemList = () => {
     const [items, setItems] = useState([]);
     const [mode, setMode] = useState();
 
+    const { category } = useParams()
+
+    const waitTime = async () => {
+        try{
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        catch(err){
+            console.error(err);
+        }
+    }
+
     useEffect(() => {
-        setMode(props.db);
-    }, [props.db])
+        waitTime();
+        console.log("category");
+        setMode(category);
+    }, [category]);
 
     useEffect(() => {
         if(!mode) return;
@@ -21,24 +34,26 @@ const ItemList = (props) => {
     }, [mode]);
     
     useEffect(() => {
-
+        console.log("item");
+        console.log(items);
     }, [items])
 
     return (
         <div>
-            <h1>{props.title}</h1>
-            
-            <ul>
-                {items.map((item, index) => {
-                    return <li key={index}>
-                        <Link to={`/detail/${mode}/${item.id}`}>
-                            <h4>{item.name}</h4>
-                            <img src={`http://localhost:5000${item.image_path}`} />
-                        </Link>
-                    </li>
-                })}
-            </ul>
-            
+            <h1>{category}</h1>
+
+            {items.length > 0 && (
+                <ul>
+                    {items.map((item, index) => {
+                        return <li key={index}>
+                            <Link to={`/detail/${mode}/${item.id}`}>
+                                <h4>{item.name}</h4>
+                                <img src={`http://localhost:5000${item.image_path}`} />
+                            </Link>
+                        </li>
+                    })}
+                </ul>
+            )}            
         </div>
     )
 }

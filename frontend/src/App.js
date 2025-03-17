@@ -26,9 +26,9 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/ani" element={<ItemList title={"ani"} db={"aniitems"} />} />
-        <Route path="/manga" element={<ItemList title={"manga"} db={"mangaitems"} />} />
-        <Route path="/novel" element={<ItemList title={"Novel"} db={"novelitems"} />} />
+        <Route path="/:category" element={<ItemList />} />
+        {/* <Route path="/manga" element={<ItemList title={"manga"} db={"manga"} />} />
+        <Route path="/novel" element={<ItemList title={"Novel"} db={"novel"} />} /> */}
         <Route path="/addItem" element={<ItemControl mode={"add"} />} />
         <Route path="/updateItem" element={<ItemControl mode={"update"} />} />
         <Route path="/detail/:mode/:id" element={<ItemDetail/>} />

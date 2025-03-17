@@ -6,17 +6,18 @@ const FormRating = ({mode, formData, handleOnChange}) => {
     return (
         <div className="ratingItem">
         <label htmlFor={mode}>{mode}</label>
-        <select id={mode} name={mode} value={formData[mode]} onChange={handleOnChange}>
+        <select id={mode} name={mode} onChange={handleOnChange}>
             <option value={0}>0</option>
             <option value={1}>1</option>
-            <option value={1.5}>1.5</option>
             <option value={2}>2</option>
-            <option value={2.5}>2.5</option>
             <option value={3}>3</option>
-            <option value={3.5}>3.5</option>
             <option value={4}>4</option>
-            <option value={4.5}>4.5</option>
             <option value={5}>5</option>
+            <option value={6}>6</option>
+            <option value={7}>7</option>
+            <option value={8}>8</option>
+            <option value={9}>9</option>
+            <option value={10}>10</option>
         </select>
         </div>
     )
@@ -124,7 +125,6 @@ const ItemControl = (props) => {
     // Form 제출
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-
         if(formData.category == 'notSelected' || !uploadFile){
             return;
         }
@@ -174,7 +174,7 @@ const ItemControl = (props) => {
             {/* 별점 */}
             {category !== "notSelected" && ratingFields[category] &&
              ratingFields[category].map(mode => (
-                <FormRating key={mode} mode={mode}formData={formData} handleOnChange={handleOnChange}/>
+                <FormRating key={mode} mode={mode} formData={formData} handleOnChange={handleOnChange}/>
             ))}
 
             {/* 설명 */}
