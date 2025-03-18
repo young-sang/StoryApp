@@ -39,15 +39,13 @@ const ItemControl = (props) => {
         title: '',
         category: "notSelected",
         imagePath: '',
-        desc: '',
+        comment: '',
         ratings: {}
     });
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // console.log(formData.imagePath);
-    },[formData, uploadFile]);
+    useEffect(() => {},[formData, uploadFile]);
 
     useEffect(() => {
         if (category !== "notSelected" && ratingFields[category]) {
@@ -62,24 +60,6 @@ const ItemControl = (props) => {
             }));
         }
     }, [category])
-
-    // handleSubmit에서 처리 불가
-    useEffect(() => {
-        if(formData.imagePath != '' && formData.category != null){
-            fetch('http://localhost:5000/data/dbUpload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => navigate(`/detail/${formData.category}/${data}`))
-            .catch(error => {
-                // alert('데이터 저장 실패');
-            });
-        }
-        
-    }, [formData.imagePath])
-
 
     // 드래그 이벤트
     const handleOnDragOver = (e) => e.preventDefault();
@@ -129,22 +109,33 @@ const ItemControl = (props) => {
         if(formData.category == 'notSelected' || !uploadFile){
             return;
         }
-        
+      
         const imgData = new FormData();
         imgData.append('image', uploadFile);
 
-        fetch('http://localhost:5000/upload/imageUpload',{
+        const imgRes = await fetch('http://localhost:5000/upload/imageUpload',{
             method: 'POST',
             body: imgData
         })
-        .then(res => res.json())
-        .then(data => setFormData((prevData) => ({
-            ...prevData, 
-            imagePath: data.filePath
-        })))
-        .catch(error => console.error(error)); 
 
-        // Form 제출 => useEffect([formData.imagePath])
+        const imgDataRes = await imgRes.json()
+        
+        const updateFormData = {
+            ...formData, 
+            imagePath: imgDataRes.filePath
+        };
+
+        
+        const formRes = await fetch('http://localhost:5000/data/dbUpload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateFormData)
+        })
+
+        const formDataRes = await formRes.json();
+        updateFormData.id = formDataRes;
+
+        navigate(`/detail/${updateFormData.category}/${formDataRes}`, {state: updateFormData})
     }
 
 
@@ -179,8 +170,8 @@ const ItemControl = (props) => {
             ))}
 
             {/* 설명 */}
-            <label htmlFor="desc">설명</label>
-            <textarea id="desc" name="desc" value={formData.desc} onChange={handleOnChange}/>
+            <label htmlFor="comment">설명</label>
+            <textarea id="comment" name="comment" value={formData.comment} onChange={handleOnChange}/>
 
             <input type="submit" value="추가" />
         </form>

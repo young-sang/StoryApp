@@ -9,7 +9,7 @@ router.post('/dbUpload', (req, res) => {
     const data = req.body;
     
     db.query(
-        `INSERT INTO items (name, category, comment, image_path) VALUES (?,?,?,?)`, [data.title, data.category, data.desc, data.imagePath], (error, results, fields) => {
+        `INSERT INTO items (name, category, comment, image_path) VALUES (?,?,?,?)`, [data.title, data.category, data.comment, data.imagePath], (error, results, fields) => {
             if(error){
                 console.error(error);
                 return;
@@ -40,16 +40,24 @@ router.get("/list/:mode", async (req, res) => {
             return res.status(400).json({error: "Invaild table name"});
         }
 
-
-        // db.query(`SELECT * FROM ${mode}`,(error, results, fields) => {
-        //     if(error){
-        //         console.error(error);
-        //         return;
-        //     }
-        //     res.json(results);
-        // });
-
-        db.query(`SELECT * FROM items WHERE category = ?`, [mode],(error, results, fields) => {
+        db.query(`
+            SELECT 
+                i.id,
+                i.name AS title,
+                i.category,
+                i.comment,
+                i.image_path AS imagePath,
+                CONCAT('{',
+                    GROUP_CONCAT(
+                        CONCAT('"', r.rating_item, '": ', r.rating_value)
+                        SEPARATOR ', '
+                    ),
+                '}') AS ratings
+            FROM items i
+            LEFT JOIN ratings r ON i.id = r.item_id
+            WHERE i.category = ?
+            GROUP BY i.id, i.name, i.category, i.comment, i.image_path;
+            `, [mode],(error, results, fields) => {
             if(error){
                 console.error(error);
                 return;
@@ -62,31 +70,6 @@ router.get("/list/:mode", async (req, res) => {
     }
 });
 
-
-router.get("/single/:mode/:id", async (req, res) => {
-    try{
-        const mode = req.params.mode;
-        const id = req.params.id;
-        
-        //허용된 테이블 목록
-        const allowedTables = ["ani", "manga", "novel"];
-        if(!allowedTables.includes(mode)){
-            return res.status(400).json({error: "Invaild table name"});
-        }
-
-
-        db.query(`SELECT * FROM items WHERE id=?`, [id],(error, results, fields) => {
-            if(error){
-                console.error(error);
-                return;
-            }
-            res.json(results);
-        });
-        
-    } catch (err) {
-        res.status(500).json({error: err.message});
-    }
-});
 
 
 

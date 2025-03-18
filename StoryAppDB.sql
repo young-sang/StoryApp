@@ -23,3 +23,20 @@ CREATE TABLE ratings (
     rating_value INT CHECK (rating_value BETWEEN 0 AND 10),
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
+
+SELECT 
+    i.id,
+    i.name AS title,
+    i.category,
+    i.comment,
+    i.image_path AS imagePath,
+    CONCAT('{',
+        GROUP_CONCAT(
+            CONCAT('"', r.rating_item, '": ', r.rating_value)
+            SEPARATOR ', '
+        ),
+    '}') AS ratings
+FROM items i
+LEFT JOIN ratings r ON i.id = r.item_id
+WHERE i.id = 120
+GROUP BY i.id, i.name, i.category, i.comment, i.image_path;

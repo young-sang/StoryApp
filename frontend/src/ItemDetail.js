@@ -1,24 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import './css/Detail.css';
 
 const ItemDetail = () => {
     const { mode } = useParams();
     const { id } = useParams();
 
-    const [item, setItem] = useState();
+    // const [item, setItem] = useState();
 
-    useEffect(() => {
-        fetch(`http://localhost:5000/data/single/${mode}/${id}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            setItem(data[0]);
-        })
-        .catch(err => {
-            console.error(err);
-        })
-    },[mode, id])
+    const location = useLocation();
+    const item = location.state;
+
+    console.log(location.state);
 
     useEffect(() => {
         
@@ -26,8 +19,11 @@ const ItemDetail = () => {
 
     return (item &&
         <div className="item-detail">
-            <h1>{item.name}</h1>
-            <img src={`http://localhost:5000${item.image_path}`} />
+            <h1>{item.title}</h1>
+            <img src={`http://localhost:5000${item.imagePath}`} />
+            <ul>
+                {}
+            </ul>
             <p>{item.comment}</p>
 
         </div>
