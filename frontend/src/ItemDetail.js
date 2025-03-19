@@ -17,8 +17,21 @@ const ItemDetail = () => {
         
     },[item])
 
+    const handleOnClick = () => {
+        
+    }
+
+    const handleDelete = () => {
+
+    }
+
     return (item &&
         <div className="item-detail">
+            <i class='bx bx-menu' onClick={handleOnClick}></i>
+            <ul className="hide">
+                <li>수정</li>
+                <li><button onClick={handleDelete}/></li>
+            </ul>
             <h1>{item.title}</h1>
             <img src={`http://localhost:5000${item.imagePath}`} />
             <ul>
