@@ -21,15 +21,15 @@ function App() {
           <li><Link to="/ani">애니</Link></li>
           <li><Link to="/manga">만화</Link></li>
           <li><Link to="/novel">소설</Link></li>
-          <li><Link to="/addItem">추가</Link></li>
+          <li><Link to="/data/addItem">추가</Link></li>
         </ul>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:category" element={<ItemList />} />
-        <Route path="/addItem" element={<ItemControl mode={"add"} />} />
-        <Route path="/updateItem" element={<ItemControl mode={"update"} />} />
-        <Route path="/detail/:mode/:id" element={<ItemDetail/>} />
+        <Route path="/detail/:category/:id" element={<ItemDetail/>} />
+        <Route path="/data/:mode" element={<ItemControl />} />
+        <Route path="/data/:mode/:id" element={<ItemControl/>} />
       </Routes>
     </Router>
   );

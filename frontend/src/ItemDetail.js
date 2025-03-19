@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import './css/Detail.css';
 
 const ItemDetail = () => {
-    const { mode } = useParams();
+    const navigate = useNavigate();
+    const { category } = useParams();
     const { id } = useParams();
 
-    // const [item, setItem] = useState();
+    const [isVisible, setIsVisible] = useState(false);
 
     const location = useLocation();
     const item = location.state;
 
-    console.log(location.state);
 
-    useEffect(() => {
-        
-    },[item])
 
-    const handleOnClick = () => {
-        
+    useEffect(() => {},[item])
+
+    const handleUpdate = () => {
+        navigate(`/data/updateItem/${item.id}`, {state: item})
     }
 
     const handleDelete = () => {
@@ -27,11 +26,14 @@ const ItemDetail = () => {
 
     return (item &&
         <div className="item-detail">
-            <i class='bx bx-menu' onClick={handleOnClick}></i>
-            <ul className="hide">
-                <li>수정</li>
+            <i class='bx bx-menu' onClick={() => setIsVisible(prev => !prev)}></i>
+            {isVisible && (
+                <ul>
+                <li onClick={handleUpdate}>수정</li>
                 <li><button onClick={handleDelete}/></li>
             </ul>
+            )}
+            
             <h1>{item.title}</h1>
             <img src={`http://localhost:5000${item.imagePath}`} />
             <ul>

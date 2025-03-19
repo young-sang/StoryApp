@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import './css/Form.css';
 
 const FormRating = ({mode, formData, handleOnChange}) => {
@@ -24,9 +24,16 @@ const FormRating = ({mode, formData, handleOnChange}) => {
 } 
 
 const ItemControl = (props) => {
+    const navigate = useNavigate();
+
     const [previewSrc, setPreveiwSrc] = useState("");
     const [uploadFile, setUploadFile] = useState();
     const [category, setCategory] = useState(null);
+
+    const { mode } = useParams();
+
+    const location = useLocation();
+    const item = location.state;
 
     const ratingFields = {
         notSelected: [],
@@ -43,7 +50,11 @@ const ItemControl = (props) => {
         ratings: {}
     });
 
-    const navigate = useNavigate();
+    // useEffect(() => {
+    //     if(mode == "updateItem"){
+    //         setFormData(item)
+    //     }
+    // }, [])
 
     useEffect(() => {},[formData, uploadFile]);
 
