@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import './css/Detail.css';
+import MyModal from "./modal.js";
 
 const ItemDetail = () => {
     const navigate = useNavigate();
@@ -8,9 +9,11 @@ const ItemDetail = () => {
     const { id } = useParams();
 
     const [isVisible, setIsVisible] = useState(false);
+    const [isModalOn, setIsModalOn] = useState(false);
 
     const location = useLocation();
     const item = location.state;
+
 
 
     const handleUpdate = () => {
@@ -18,6 +21,7 @@ const ItemDetail = () => {
     }
 
     const handleDelete = () => {
+        setIsModalOn(false);
         const datafetch = async () => {
             const res = await fetch(`http://localhost:5000/data/delete/${id}`, {
                 method: "DELETE",
@@ -40,10 +44,12 @@ const ItemDetail = () => {
             {isVisible && (
                 <ul>
                 <li onClick={handleUpdate}>수정</li>
-                <li><button onClick={handleDelete}/>삭제</li>
+                <li onClick={() => setIsModalOn(true)}>삭제</li>
             </ul>
             )}
-            
+            {isModalOn && (
+                <MyModal handleDelete={handleDelete} setIsOpen={setIsModalOn}/>
+            )}
             <h1>{item.title}</h1>
             <img src={`http://localhost:5000${item.imagePath}` || null} />
             <ul>

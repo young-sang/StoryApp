@@ -52,6 +52,7 @@ const ItemControl = (props) => {
         ratings: {}
     });
 
+
     useEffect(() => {
         if(mode == "UPDATE"){
             setFormData({
@@ -62,8 +63,20 @@ const ItemControl = (props) => {
                 comment: item.item.comment,
                 ratings: item.item.ratings
             })
+        }else if(mode == "CREATE"){
+            setFormData({
+                id: -1,
+                title: '',
+                category: "notSelected",
+                imagePath: '',
+                comment: '',
+                ratings: {}
+            });
+            setUploadFile(null);
+            setImageChange(false);
+            setPreveiwSrc("")
         }
-    }, [])
+    }, [mode])
 
     useEffect(() => {
         if(mode == "UPDATE"){
@@ -183,7 +196,7 @@ const ItemControl = (props) => {
 
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form key={location.pathname} onSubmit={handleOnSubmit}>
             {/* 제목 */}
             <label htmlFor="title">제목</label>
             <input type="text" name="title" value={formData.title} onChange={handleOnChange} required/>
