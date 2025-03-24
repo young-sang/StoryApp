@@ -34,7 +34,6 @@ const ItemControl = (props) => {
 
     const location = useLocation();
     const item = location.state;
-    console.log(item);
     
 
     const ratingFields = {
@@ -137,7 +136,7 @@ const ItemControl = (props) => {
     // Form 제출
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        console.log(1);
+
         if(formData.category == 'notSelected'){
             return;
         }

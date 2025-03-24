@@ -13,23 +13,25 @@ const ItemDetail = () => {
     const item = location.state;
 
 
-
-    useEffect(() => {
-        console.log(item)
-    },[])
-
     const handleUpdate = () => {
-        console.log("item: " +item);
-        // const a = {
-        //     ...item,
-        //     ratings: JSON.parse(item.ratings)
-        // };
-        // console.log("a" + a);
         navigate(`/data/UPDATE/${item.id}`, {state: {mode:"UPDATE", item: item}});
     }
 
     const handleDelete = () => {
-
+        const datafetch = async () => {
+            const res = await fetch(`http://localhost:5000/data/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({item: item.imagePath})
+            })
+            const data = await res.json();
+            
+            navigate(`/${item.category}`);
+        }
+        
+        datafetch();
     }
 
     return (item &&
@@ -38,7 +40,7 @@ const ItemDetail = () => {
             {isVisible && (
                 <ul>
                 <li onClick={handleUpdate}>수정</li>
-                <li><button onClick={handleDelete}/></li>
+                <li><button onClick={handleDelete}/>삭제</li>
             </ul>
             )}
             

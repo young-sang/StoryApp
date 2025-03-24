@@ -114,7 +114,38 @@ router.get("/list/:mode", async (req, res) => {
     }
 });
 
-
+router.delete("/delete/:id", (req, res) => {
+    const id = req.params.id;
+    const path = req.body.item;    
+    const filePath = `.${path}`;
+    db.query(`
+        DELETE FROM ratings WHERE item_id = ?
+        `, [id], (error, result, fields) => {
+            if(error){
+                console.error(error);
+                return;
+            }
+            db.query(`
+                DELETE FROM items WHERE id = ?
+                `, [id], (error, result, fields) => {
+                    if(error){
+                        console.error(error);
+                        return;
+                    }
+                    if(path){
+                        fs.unlink(filePath, (err) => {
+                            if(err){
+                                console.error(err);
+                                return;
+                            }
+                            console.log("파일이 성공적으로 삭제되었습니다.");
+                        })
+                    }
+                    res.json({result: "success"});
+                    console.log("데이터 삭제 성공");
+                })
+        })
+})
 
 
 module.exports = router;
