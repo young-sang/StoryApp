@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../db.js');
 const router = express.Router();
+const fs = require("fs");
 
 
 
@@ -28,6 +29,49 @@ router.post('/dbUpload', (req, res) => {
         }
     )
 })
+
+
+router.put("/dbUpload", (req, res) => {
+    const data = req.body;
+    const filePath = `.${data.previmagePath}`;
+    db.query(
+        `UPDATE items SET name = ?, category = ?, image_path = ?, comment = ? WHERE id = ?`, [data.title, data.category, data.imagePath, data.comment, data.id], (error, result, fields) => {
+            if(error){
+                console.error(error);
+                return;
+            }
+            
+            const ratingValues = Object.entries(data.ratings).map(([key,value]) => {
+                return new Promise((resolve, reject) => {
+                    db.query(`UPDATE ratings SET rating_value = ? WHERE item_id = ? AND rating_item`, [value, data.id, key], (error, results, fields) => {
+                        if(error){
+                            console.error(error);
+                            reject(error);
+                        }
+                        else{
+                            resolve(result);
+                        }
+                    });
+                });
+            });
+            Promise.all(ratingValues)
+            .then(() => res.json(data.id))
+            .then(() => {
+                if(data.previmagePath){
+                    fs.unlink(filePath, (err) => {
+                        if(err){
+                            console.error(err);
+                            return;
+                        }
+                        console.log("파일이 성공적으로 삭제되었습니다.");
+                    })
+                }
+            })
+            .catch((err) => console.error(err));
+        }
+    )
+})
+
 
 // Read
 router.get("/list/:mode", async (req, res) => {

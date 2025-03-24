@@ -28,12 +28,14 @@ const ItemControl = (props) => {
 
     const [previewSrc, setPreveiwSrc] = useState("");
     const [uploadFile, setUploadFile] = useState();
-    const [category, setCategory] = useState(null);
+    const [imageChange, setImageChange] = useState(false);
 
     const { mode } = useParams();
 
     const location = useLocation();
     const item = location.state;
+    console.log(item);
+    
 
     const ratingFields = {
         notSelected: [],
@@ -43,6 +45,7 @@ const ItemControl = (props) => {
     };
 
     const [formData, setFormData] = useState({
+        id: -1,
         title: '',
         category: "notSelected",
         imagePath: '',
@@ -50,27 +53,41 @@ const ItemControl = (props) => {
         ratings: {}
     });
 
-    // useEffect(() => {
-    //     if(mode == "updateItem"){
-    //         setFormData(item)
-    //     }
-    // }, [])
-
-    useEffect(() => {},[formData, uploadFile]);
+    useEffect(() => {
+        if(mode == "UPDATE"){
+            setFormData({
+                id: item.item.id,
+                title: item.item.title,
+                category: item.item.category,
+                imagePath: item.item.imagePath,
+                comment: item.item.comment,
+                ratings: item.item.ratings
+            })
+        }
+    }, [])
 
     useEffect(() => {
-        if (category !== "notSelected" && ratingFields[category]) {
-            const newRatings = {};
-            ratingFields[category].forEach(field => {
-                newRatings[field] = 0; // 각 항목에 대한 초기값 설정
-            });
-            setFormData(prev => ({
-                ...prev,
-                category,
-                ratings: newRatings
-            }));
+        if(mode == "UPDATE"){
+            setPreveiwSrc(formData.imagePath);
         }
-    }, [category])
+    }, [formData.imagePath])
+
+    useEffect(() => {
+        if (formData.category !== "notSelected" && ratingFields[formData.category]) {
+            if(mode == "CREATE"){
+                const newRatings = {};
+                ratingFields[formData.category].forEach(field => {
+                    newRatings[field] = 0; // 각 항목에 대한 초기값 설정
+                });
+                setFormData(prev => ({
+                    ...prev,
+                    ratings: newRatings
+                }));
+            }
+        }
+    },[formData.category]);
+
+    useEffect(() => {},[uploadFile, imageChange]);
 
     // 드래그 이벤트
     const handleOnDragOver = (e) => e.preventDefault();
@@ -93,7 +110,7 @@ const ItemControl = (props) => {
                 };
 
                 reader.readAsDataURL(file);
-
+                setImageChange(true);
             } else{
                 // alert('이미지 파일만 업로드 가능하다.');
             }
@@ -103,8 +120,11 @@ const ItemControl = (props) => {
     const handleOnChange = (e) => {
         const {name, value} = e.target;
         if(name == "category"){
-            setCategory(value);
-        } else if(ratingFields[category]?.includes(name)){
+            setFormData(prev => ({
+                ...prev,
+                category: value
+            }));
+        } else if(ratingFields[formData.category]?.includes(name)){
             setFormData(prev => ({
                 ...prev,
                 ratings: {...prev.ratings, [name]: value}
@@ -117,28 +137,41 @@ const ItemControl = (props) => {
     // Form 제출
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-        if(formData.category == 'notSelected' || !uploadFile){
+        console.log(1);
+        if(formData.category == 'notSelected'){
             return;
         }
-      
-        const imgData = new FormData();
-        imgData.append('image', uploadFile);
 
-        const imgRes = await fetch('http://localhost:5000/upload/imageUpload',{
-            method: 'POST',
-            body: imgData
-        })
-
-        const imgDataRes = await imgRes.json()
+        let updateFormData = {};
         
-        const updateFormData = {
-            ...formData, 
-            imagePath: imgDataRes.filePath
-        };
+        if(mode == "CREATE" || imageChange){
+            let previmagePath = null;
+            if(mode == "UPDATE"){
+                previmagePath = formData.imagePath;
+            };
 
-        
+            const imgData = new FormData();
+            imgData.append('image', uploadFile);
+    
+            const imgRes = await fetch('http://localhost:5000/upload/imageUpload',{
+                method: 'POST',
+                body: imgData
+            })
+    
+            const imgDataRes = await imgRes.json();
+
+            updateFormData = {
+                ...formData, 
+                imagePath: imgDataRes.filePath,
+            }
+            updateFormData["previmagePath"] = previmagePath;
+        }
+        else{
+            updateFormData = formData;
+        }
+
         const formRes = await fetch('http://localhost:5000/data/dbUpload', {
-            method: 'POST',
+            method: mode == "CREATE" ? 'POST' : "PUT",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updateFormData)
         })
@@ -169,14 +202,19 @@ const ItemControl = (props) => {
             {/* 이미지 */}
             <label htmlFor="image">이미지</label>
             <div id="drop-zone" style={{ width: "100px", height: "100px", border: ".5px solid #111"}} onDragOver={handleOnDragOver} onDrop={handleOnDrop}>
-                <img src={previewSrc} alt="이미지 미리보기" id="preview"></img>
+                <img 
+                    src={previewSrc || null} 
+                    alt="이미지 미리보기" 
+                    id="preview" 
+                    onError={(e) => { e.target.src = `http://localhost:5000${formData.imagePath}`; }}
+                />
             </div>
             <input type="hidden" name="imagePath" value={formData.imagePath} required/>
             
 
             {/* 별점 */}
-            {category !== "notSelected" && ratingFields[category] &&
-             ratingFields[category].map(mode => (
+            {formData.category !== "notSelected" && ratingFields[formData.category] &&
+             ratingFields[formData.category].map(mode => (
                 <FormRating key={mode} mode={mode} formData={formData} handleOnChange={handleOnChange}/>
             ))}
 

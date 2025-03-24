@@ -14,10 +14,18 @@ const ItemDetail = () => {
 
 
 
-    useEffect(() => {},[item])
+    useEffect(() => {
+        console.log(item)
+    },[])
 
     const handleUpdate = () => {
-        navigate(`/data/updateItem/${item.id}`, {state: item})
+        console.log("item: " +item);
+        // const a = {
+        //     ...item,
+        //     ratings: JSON.parse(item.ratings)
+        // };
+        // console.log("a" + a);
+        navigate(`/data/UPDATE/${item.id}`, {state: {mode:"UPDATE", item: item}});
     }
 
     const handleDelete = () => {
@@ -35,7 +43,7 @@ const ItemDetail = () => {
             )}
             
             <h1>{item.title}</h1>
-            <img src={`http://localhost:5000${item.imagePath}`} />
+            <img src={`http://localhost:5000${item.imagePath}` || null} />
             <ul>
                 {}
             </ul>

@@ -31,10 +31,14 @@ const ItemList = () => {
             {items.length > 0 && (
                 <ul>
                     {items.map((item, index) => {
+                        const a = {
+                            ...item,
+                            ratings: JSON.parse(item.ratings)
+                        }
                         return <li key={index}>
-                            <Link to={`/detail/${mode}/${item.id}`} state={item}>
+                            <Link to={`/detail/${mode}/${item.id}`} state={a}>
                                 <h4>{item.title}</h4>
-                                <img src={`http://localhost:5000${item.imagePath}`} />
+                                <img src={`http://localhost:5000${item.imagePath}` || null} />
                             </Link>
                         </li>
                     })}

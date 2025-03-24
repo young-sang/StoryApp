@@ -21,7 +21,7 @@ function App() {
           <li><Link to="/ani">애니</Link></li>
           <li><Link to="/manga">만화</Link></li>
           <li><Link to="/novel">소설</Link></li>
-          <li><Link to="/data/addItem">추가</Link></li>
+          <li><Link to="/data/CREATE" state={{mode:"CREATE"}}>추가</Link></li>
         </ul>
       </nav>
       <Routes>
